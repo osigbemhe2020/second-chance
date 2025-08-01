@@ -12,6 +12,7 @@ const app = express();
 app.use("*",cors());
 const port = 3060;
 
+
 // Connect to MongoDB; we just do this one time
 connectToDatabase().then(() => {
     pinoLogger.info('Connected to DB');
@@ -21,32 +22,25 @@ connectToDatabase().then(() => {
 
 app.use(express.json());
 
+
+const secondChanceItemsRoutes = require('./routes/secondChanceItemsRoutes');
+app.use('/api/secondchance/items', secondChanceItemsRoutes);
+
 // Route files
 
 // authRoutes Step 2: import the authRoutes and store in a constant called authRoutes
-//{{insert code here}}
-
-// Items API Task 1: import the secondChanceItemsRoutes and store in a constant called secondChanceItemsRoutes
-//{{insert code here}}
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
 
 // Search API Task 1: import the searchRoutes and store in a constant called searchRoutes
-//{{insert code here}}
+const searchRoutes = require('./routes/searchRoutes');
+app.use('/api/secondchance/search', searchRoutes);
 
 
 const pinoHttp = require('pino-http');
 const logger = require('./logger');
 
 app.use(pinoHttp({ logger }));
-
-// Use Routes
-// authRoutes Step 2: add the authRoutes and to the server by using the app.use() method.
-//{{insert code here}}
-
-// Items API Task 2: add the secondChanceItemsRoutes to the server by using the app.use() method.
-//{{insert code here}}
-
-// Search API Task 2: add the searchRoutes to the server by using the app.use() method.
-//{{insert code here}}
 
 
 // Global Error Handler
