@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const pino = require('pino');  // Import Pino logger
 dotenv.config();
 const logger = pino();  // Create a Pino logger instance
+const { validationResult } = require('express-validator');
 
 //Create JWT secret
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -38,7 +39,8 @@ router.post('/register', async (req, res) => {
         const authtoken = jwt.sign(payload, JWT_SECRET);
 
         logger.info('User registered successfully');
-        res.json({ authtoken,email });
+        const email = req.body.email;
+        res.json({ authtoken, email });
     } catch (e) {
          return res.status(500).send('Internal server error');
     }
