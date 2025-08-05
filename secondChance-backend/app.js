@@ -22,22 +22,13 @@ connectToDatabase()
     console.error('Failed to connect to DB', e);
   });
 
-// Routes
+// Route files
 const secondChanceItemsRoutes = require('./routes/secondChanceItemsRoutes');
 app.use('/api/secondchance/items', secondChanceItemsRoutes);
 
-<<<<<<< HEAD
-// Route files
-
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
-
-=======
-const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes);
-
->>>>>>> 113035e0432d3d830a349e882579bdcfa1b8e67f
 const searchRoutes = require('./routes/searchRoutes');
 app.use('/api/secondchance/search', searchRoutes);
 
