@@ -37,24 +37,36 @@ router.get('/', async (req, res, next) => {
 });
 
 // Add a new item
-router.post('/', upload.single('file'), async(req, res,next) => {
-    try {
+router.post('/', upload.single('file'), async (req, res, next) => {
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection("secondChanceItems");
 
-        const db = await connectToDatabase();
-        const collection = db.collection("secondChanceItems");
-        let secondChanceItem = req.body;
-        const lastItemQuery = await collection.find().sort({'id': -1}).limit(1);
-        await lastItemQuery.forEach(item => {
-        secondChanceItem.id = (parseInt(item.id) + 1).toString();
-        });
-        const date_added = Math.floor(new Date().getTime() / 1000);
-       secondChanceItem.date_added = date_added;
-       secondChanceItem = await collection.insertOne(secondChanceItem);
-        res.status(201).json(secondChanceItem.ops[0]);
-    } catch (e) {
-        next(e);
+    let secondChanceItem = req.body;
+
+    // Auto-increment id
+    const lastItem = await collection.find().sort({ id: -1 }).limit(1).toArray();
+    secondChanceItem.id = lastItem.length > 0
+      ? (parseInt(lastItem[0].id) + 1).toString()
+      : "1";
+
+    // Add timestamp
+    secondChanceItem.date_added = Math.floor(Date.now() / 1000);
+
+    // Save uploaded file name if present
+    if (req.file) {
+      secondChanceItem.image = req.file.filename;
     }
+
+    const result = await collection.insertOne(secondChanceItem);
+    res.status(201).json({ ...secondChanceItem, _id: result.insertedId });
+
+  } catch (e) {
+    console.error('Error in POST /items:', e);
+    res.status(500).json({ error: 'Internal Server Error', message: e.message });
+  }
 });
+
 
 // Get a single secondChanceItem by ID
 router.get('/:id', async (req, res, next) => {
@@ -74,53 +86,52 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // Update and existing item
-router.put('/:id', async(req, res,next) => {
+router.put('/:id', async (req, res, next) => {
     try {
         const db = await connectToDatabase();
         const collection = db.collection("secondChanceItems");
-        const secondChanceItem = await collection.findOne({ id });
 
-        if (!secondChanceItem) {
-        logger.error('secondChanceItem not found');
-        return res.status(404).json({ error: "secondChanceItem not found" });
-        }
-        secondChanceItem.category = req.body.category;
-        secondChanceItem.condition = req.body.condition;
-        secondChanceItem.age_days = req.body.age_days;
-        secondChanceItem.description = req.body.description;
-        secondChanceItem.age_years = Number((secondChanceItem.age_days/365).toFixed(1));
-        secondChanceItem.updatedAt = new Date();
+        const id = req.params.id;
 
-        const updatepreloveItem = await collection.findOneAndUpdate(
-            { id },
-            { $set: secondChanceItem },
-            { returnDocument: 'after' }
+        // Try to find and update the item
+        const result = await collection.updateOne(
+            { id: id }, // use string if your ids are stored as strings
+            { $set: req.body }
         );
-               if(updatepreloveItem) {
-            res.json({"uploaded":"success"});
-        } else {
-            res.json({"uploaded":"failed"});
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ message: "secondChanceItem not found" });
         }
+
+        res.json({ message: "secondChanceItem updated successfully" });
     } catch (e) {
         next(e);
     }
 });
+
 
 // Delete an existing item
-router.delete('/:id', async(req, res,next) => {
-    try {
-        const db = await connectToDatabase();
-        const collection = db.collection("secondChanceItems");
-        const secondChanceItem = await collection.findOne({ id });
-        if (!secondChanceItem) {
-        logger.error('secondChanceItem not found');
-        return res.status(404).json({ error: "secondChanceItem not found" });
-        }
-       await collection.deleteOne({ id });
-       res.json({"deleted":"success"});
-    } catch (e) {
-        next(e);
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection("secondChanceItems");
+
+    const id = req.params.id; // 👈 match how it's stored in MongoDB
+
+    const secondChanceItem = await collection.findOne({ id });
+
+    if (!secondChanceItem) {
+      console.error("secondChanceItem not found");
+      return res.status(404).json({ error: "secondChanceItem not found" });
     }
+
+    await collection.deleteOne({ id });
+    res.json({ deleted: "success" });
+  } catch (e) {
+    next(e);
+  }
 });
+
+
 
 module.exports = router;
