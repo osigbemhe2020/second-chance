@@ -75,7 +75,7 @@ function DetailsPage() {
             </div>
             <div className="comments-section mt-4">
                 <h3 className="mb-3">Comments</h3>
-                {gift.comments.length >0 && gift.comments.map((comment, index) => (
+                {gift.comments && gift.comments.length > 0 && gift.comments.map((comment, index) => (
                     <div key={index} className="card mb-3">
                         <div className="card-body">
                             <p className="comment-author"><strong>{comment.author}:</strong></p>

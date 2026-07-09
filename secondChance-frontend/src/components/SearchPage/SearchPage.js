@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {urlConfig} from '../../config';
+import { urlConfig } from '../../config';
 
 function SearchPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [ageRange, setAgeRange] = useState(6); // Initialize with minimum value
     const [searchResults, setSearchResults] = useState([]);
+    const navigate = useNavigate();
     const categories = ['Living', 'Bedroom', 'Bathroom', 'Kitchen', 'Office'];
     const conditions = ['New', 'Like New', 'Older'];
 
@@ -42,6 +43,9 @@ function SearchPage() {
             condition: document.getElementById('conditionSelect').value,
         }).toString();
 
+        // Reflect the search params in the browser URL
+        navigate(`/app/search?${queryParams}`);
+
         try {
             const response = await fetch(`${baseUrl}${queryParams}`);
             if (!response.ok) {
@@ -54,10 +58,8 @@ function SearchPage() {
         }
     };
 
-    const navigate = useNavigate();
-
     const goToDetailsPage = (productId) => {
-        navigate(`/app/product/${productId}`);
+        navigate(`/app/item/${productId}`);
     };
 
 
@@ -115,10 +117,10 @@ function SearchPage() {
                             searchResults.map(product => (
                                 <div key={product.id} className="card mb-3">
                                     {/* Check if product has an image and display it */}
-                                    <img src={urlConfig.backendUrl+product.image} alt={product.name} className="card-img-top" />
+                                    <img src={urlConfig.backendUrl + product.image} alt={product.name} className="card-img-top" />
                                     <div className="card-body">
                                         <h5 className="card-title">{product.name}</h5>
-                                        <p className="card-text">{product.description.slice(0, 100)}...</p>
+                                        <p className="card-text">{product.description ? product.description.slice(0, 50) : "No description available"}...</p>
                                     </div>
                                     <div className="card-footer">
                                         <button onClick={() => goToDetailsPage(product.id)} className="btn btn-primary">

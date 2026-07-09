@@ -43,13 +43,18 @@ function MainPage() {
     };
 
     const getConditionClass = (condition) => {
-        return condition === "New" ? "list-group-item-success" : "list-group-item-warning";
+        if (condition === "New") return "condition-badge new";
+        if (condition === "Like New") return "condition-badge like-new";
+        return "condition-badge older";
     };
 
     return (
         <div className="container mt-5">
             {isLoggedIn ? (
-              <button onClick={handleAddItem}>Add Item</button>
+              <button onClick={handleAddItem} className="add-item-trigger">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{marginRight: '6px'}}><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/></svg>
+                Add Item
+              </button>
             ) : (
                 null
             )}
@@ -65,9 +70,9 @@ function MainPage() {
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">{item.name}</h5>
-                                <p className={`card-text ${getConditionClass(item.condition)}`}>
+                                <span className={getConditionClass(item.condition)}>
                                     {item.condition}
-                                </p>
+                                </span>
                                 <p className="card-text date-added">
                                     {formatDate(item.date_added)}
                                 </p>

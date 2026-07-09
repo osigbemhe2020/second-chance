@@ -1,65 +1,127 @@
-/* Add this CSS to your existing styles or create a new CSS file */
+/* Profile Page */
 
 .profile-container {
-    max-width: 400px;
-    margin: 15% auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-  }
-  
-  .profile-container h1 {
-    margin-top: 0;
-  }
-  
-  .profile-container form {
-    margin-bottom: 20px;
-  }
-  
-  .profile-container label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  .profile-container input[type="text"],
-  .profile-container input[type="email"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .profile-container button {
-    display: block;
-    width: 100%;
-    padding: 8px;
-    background-color: #2190ff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .profile-details {
-    background-color: #fff;
-    border-radius: 4px;
-    padding: 20px;
-  }
-  
-  .profile-details h2 {
-    margin-top: 0;
-  }
-  
-  .profile-details p {
-    margin-bottom: 10px;
-  }
-  
-  .profile-details button {
-    background-color: #2190ff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    cursor: pointer;
-  }
-  
+  max-width: 480px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+}
+
+/* Avatar circle */
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 auto 1.25rem auto;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+}
+
+/* Card */
+.profile-card {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.profile-card h1 {
+  color: #f8fafc;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.profile-card .profile-email {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+/* Edit / Save buttons */
+.profile-card button {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1.25rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  letter-spacing: 0.02em;
+}
+
+.profile-card button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+/* Form labels & inputs */
+.profile-card label {
+  display: block;
+  text-align: left;
+  color: #94a3b8 !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.profile-card input[type="text"],
+.profile-card input[type="email"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #f8fafc;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.profile-card input[type="text"]:focus,
+.profile-card input[type="email"]:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.profile-card input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Divider */
+.profile-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 1.5rem 0;
+}
+
+/* Success message */
+.profile-success {
+  color: #34d399;
+  font-size: 0.875rem;
+  font-style: italic;
+  margin-top: 0.75rem;
+  display: block;
+}

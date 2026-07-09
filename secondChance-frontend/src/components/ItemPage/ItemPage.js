@@ -64,82 +64,88 @@ function ItemPage() {
     return (
       <div className="container mt-5">
       <div className="row justify-content-center">
-          <div className="col-md-6 col-lg-4">
-              <div className="register-card p-4 border rounded">
-                  <h2 className="text-center mb-4 font-weight-bold">Add Item</h2>
-                  <div className="mb-3">
-                      <label htmlFor="name" className="form-label">Name</label>
+          <div className="col-md-8 col-lg-6">
+              <div className="register-card p-5 border rounded">
+                  <h2 className="text-center mb-4 font-weight-bold">Add New Item</h2>
+                  
+                  <div className="mb-4">
+                      <label htmlFor="name" className="form-label">Item Name</label>
                       <input
                           id="name"
                           type="text"
                           className="form-control"
-                          placeholder="Enter Item Name"
+                          placeholder="e.g. Vintage Study Lamp"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                       />
                   </div>
 
-                  <div className="d-flex flex-column">
-                            {/* Category Dropdown */}
-                            <label htmlFor="category">Category</label>
-                            <select id="category" className="form-control my-1" onChange={(e) => setCategory(e.target.value)}>
-
-                                <option key="Living" value="Living">Living</option>
-                                <option key="Bedroom" value="Bedroom">Bedroom</option>
-                                <option key="Bathroom" value="Bathroom">Bathroom</option>
-                                <option key="Kitchen" value="Kitchen">Kitchen</option>
-                                <option key="Office" value="Office">Office</option>
-                            </select>
-
-                            {/* Condition Dropdown */}
-                            <label htmlFor="condition">Condition</label>
-                            <select id="condition" className="form-control my-1" onChange={(e) => setCondition(e.target.value)}>
-                                <option key="New" value="New">New</option>
-                                <option key="Like New" value="Like New">Like New</option>
-                                <option key="Older" value="Older">Older</option>
-                            </select>
+                  <div className="row mb-4">
+                      <div className="col-md-6">
+                          <label htmlFor="category" className="form-label">Category</label>
+                          <select id="category" className="form-control" onChange={(e) => setCategory(e.target.value)}>
+                              <option key="Living" value="Living">Living</option>
+                              <option key="Bedroom" value="Bedroom">Bedroom</option>
+                              <option key="Bathroom" value="Bathroom">Bathroom</option>
+                              <option key="Kitchen" value="Kitchen">Kitchen</option>
+                              <option key="Office" value="Office">Office</option>
+                          </select>
+                      </div>
+                      <div className="col-md-6">
+                          <label htmlFor="condition" className="form-label">Condition</label>
+                          <select id="condition" className="form-control" onChange={(e) => setCondition(e.target.value)}>
+                              <option key="New" value="New">New</option>
+                              <option key="Like New" value="Like New">Like New</option>
+                              <option key="Older" value="Older">Older</option>
+                          </select>
+                      </div>
                   </div>
 
-                  <div className="mb-3">
-                      <label htmlFor="zipcode" className="form-label">Zipcode</label>
-                      <input
-                          id="zipcode"
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter the Zipcode"
-                          value={zipcode}
-                          onChange={(e) => setZipcode(e.target.value)}
-                      />
+                  <div className="row mb-4">
+                      <div className="col-md-6">
+                          <label htmlFor="zipcode" className="form-label">Zipcode</label>
+                          <input
+                              id="zipcode"
+                              type="text"
+                              className="form-control"
+                              placeholder="e.g. 10110"
+                              value={zipcode}
+                              onChange={(e) => setZipcode(e.target.value)}
+                          />
+                      </div>
+                      <div className="col-md-6">
+                          <label htmlFor="age_days" className="form-label">Age (in days)</label>
+                          <input
+                              id="age_days"
+                              type="number"
+                              className="form-control"
+                              placeholder="e.g. 120"
+                              value={age_days}
+                              onChange={(e) => setAge_days(e.target.value)}
+                          />
+                      </div>
                   </div>
 
-                  <div className="mb-3">
-                      <label htmlFor="age_days" className="form-label">Age in days</label>
-                      <input
-                          id="age_days"
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter the  Age in days"
-                          value={age_days}
-                          onChange={(e) => setAge_days(e.target.value)}
-                      />
-                  </div>
-
-                  <div className="mb-3">
+                  <div className="mb-4">
                       <label htmlFor="description" className="form-label">Description</label>
                       <textarea
                           id="description"
-                          cols="2"
+                          rows="4"
                           className="form-control"
-                          placeholder="Enter the  description"
+                          placeholder="Describe the item's condition, dimensions, color..."
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}
                       />
                   </div>
-                  <input style={{padding:'.5cm'}} type="file" id="file" name="file" accept=".jpg, .png, .gif"/>
+
+                  <div className="mb-4">
+                      <label className="form-label">Item Photo</label>
+                      <input style={{display: 'block'}} type="file" id="file" name="file" accept=".jpg, .png, .gif"/>
+                  </div>
 
                   <button className="btn btn-primary w-100 mb-3" onClick={handleAddItem}>Add Item</button>
 
-                  <span style={{color:'green',height:'.5cm',display:'block',fontStyle:'italic',fontSize:'12px'}}>{message}</span>
+                  <span style={{color:'var(--success)',height:'.5cm',display:'block',fontStyle:'italic',fontSize:'14px',fontWeight:'500'}}>{message}</span>
 
               </div>
           </div>

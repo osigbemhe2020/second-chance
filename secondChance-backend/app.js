@@ -3,15 +3,21 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const pinoLogger = require('./logger');
 const connectToDatabase = require('./models/db');
-const { loadData } = require('./util/import-mongo/index');
+//const { loadData } = require('./util/import-mongo/index');
 
 const app = express();
 const port = 3060;
 
+const pinoHttp = require('pino-http');
+const logger = require('./logger');
+app.use(pinoHttp({ logger }));
+
 app.use('*', cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB
 connectToDatabase()
@@ -32,10 +38,6 @@ app.use('/api/auth', authRoutes);
 const searchRoutes = require('./routes/searchRoutes');
 app.use('/api/secondchance/search', searchRoutes);
 
-const pinoHttp = require('pino-http');
-const logger = require('./logger');
-app.use(pinoHttp({ logger }));
-
 // Health check route
 app.get('/', (req, res) => {
   res.send('Inside the server');
@@ -47,6 +49,10 @@ app.use((err, req, res, next) => {
   res.status(500).send('Internal Server Error');
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
+
+module.exports = app;

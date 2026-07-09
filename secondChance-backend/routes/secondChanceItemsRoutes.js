@@ -49,6 +49,10 @@ router.post('/', upload.single('file'), async (req, res, next) => {
     const dateAdded = Math.floor(Date.now() / 1000);
     secondChanceItem.date_added = dateAdded;
 
+    if (!secondChanceItem.comments) {
+      secondChanceItem.comments = [];
+    }
+
     const result = await collection.insertOne(secondChanceItem);
     res.status(201).json(result.ops?.[0] || secondChanceItem);
   } catch (e) {
@@ -100,7 +104,7 @@ router.put('/:id', async (req, res, next) => {
       { returnDocument: 'after' }
     );
 
-    if (result?.value) {
+    if (result) {
       res.json({ uploaded: 'success' });
     } else {
       res.json({ uploaded: 'failed' });

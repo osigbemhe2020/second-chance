@@ -1,189 +1,383 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
-html {
-  overflow-y: scroll;
+:root {
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  --secondary-gradient: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  --accent-color: #6366f1;
+  --bg-color: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --navbar-bg: rgba(15, 23, 42, 0.8);
 }
-/* Primary color for headers and important buttons */
-.custom-card-title,
+
+html, body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism containers */
+.container {
+  padding: 3rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Custom premium headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+/* Buttons */
 .btn-primary {
-  background-color: #0056b3; /* Strong, confident blue */
-  color: white; /* For text on primary color background */
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: 12px;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.02em;
+  cursor: pointer;
 }
 
-/* Secondary color for hover states and highlights */
 .btn-primary:hover,
 .btn-primary:focus {
-  background-color: #009688; /* Teal */
+  background: var(--primary-gradient);
+  opacity: 0.95;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
 
-/* General background color */
-body,
-.page-background {
-  background-color: #f4f4f4; /* Light grey */
-  margin-right: calc(100vw - 100%);
+.btn-primary:active {
+  transform: translateY(0);
 }
 
-/* Background color for cards */
-.card {
-  background-color: #ffffff; /* White */
+/* Navbar Premium Styling */
+.navbar {
+  background-color: var(--navbar-bg) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 1rem 2rem !important;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
-/* Text color */
-.card-title,
-.card-text {
-  color: #333333; /* Darker grey */
+.navbar-brand {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.03em;
 }
 
-/* Subtle accent color */
-.text-muted {
-  color: #6c757d; /* Muted grey */
+.nav-link {
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+  font-size: 1rem !important;
+  padding: 0.5rem 1rem !important;
+  margin: 0 0.2rem;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-/* Success color for messages or confirmation */
-.text-success,
-.btn-success {
-  color: #28a745; /* Fresh green */
+.nav-link:hover {
+  color: var(--text-primary) !important;
+  transform: translateY(-1px);
 }
 
-.container {
-  padding: 2rem 15%; /* Adds more space on the sides */
+/* Active Nav Links styling — works with React Router NavLink */
+.nav-item.active .nav-link,
+.nav-item .nav-link.active,
+.nav-link.active {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+  position: relative;
 }
 
-.row {
-  justify-content: space-around; /* Adds space between cards */
+.nav-item.active .nav-link::after,
+.nav-item .nav-link.active::after,
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0.5rem;
+  right: 0.5rem;
+  height: 2px;
+  background: var(--accent-color);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--accent-color);
 }
 
+/* Login/Logout/Register Buttons in Navbar */
+.nav-link.login-btn,
+.nav-link.register-btn,
+.nav-link.logout-btn {
+  padding: 0.5rem 1.2rem !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-link.login-btn {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.nav-link.login-btn:hover {
+  background: var(--success) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.nav-link.register-btn {
+  background: rgba(99, 102, 241, 0.15) !important;
+  color: #818cf8 !important;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  margin-left: 0.5rem;
+}
+
+.nav-link.register-btn:hover {
+  background: var(--accent-color) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.nav-link.logout-btn {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #f87171 !important;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.nav-link.logout-btn:hover {
+  background: var(--danger) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Cards Grid & Layout */
 .product-card {
-  margin: 1rem 0; /* Adds space above and below each card */
-  border-radius: 10px; /* Rounded corners for card */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  overflow: hidden; /* Ensures nothing spills out of the card's rounded corners */
+  background: var(--card-bg) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border) !important;
+  border-radius: 20px !important;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
+.product-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.3);
+}
+
+/* Card Image Styles */
 .image-placeholder {
   width: 100%;
-  height: 200px; /* Fixed height, adjust as needed */
-  position: relative; /* Set a reference for absolute positioned children */
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
+  height: 240px;
+  overflow: hidden;
+  position: relative;
+  background: #1e293b;
 }
 
 .image-placeholder img {
-  position: absolute; /* Position it over the placeholder */
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Cover the area without stretching */
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover .image-placeholder img {
+  transform: scale(1.08);
 }
 
 .no-image-available {
   width: 100%;
-  height: 200px; /* Adjust based on your design */
-  background-color: #ddd; /* A neutral background color */
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  color: #666;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
 }
 
-
+/* Card Body Styles */
 .card-body {
-  padding: 1rem;
-  flex-grow: 1; /* Make body grow to fill space */
+  padding: 1.5rem !important;
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary) !important;
+}
+
+.card-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* Styled condition badges */
+.condition-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  width: fit-content;
+}
+
+.condition-badge.new {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.condition-badge.like-new {
+  background: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.condition-badge.older {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .date-added {
-  margin-top: auto; /* Pushes everything else to the top, and this to the bottom */
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 0.75rem;
 }
 
 .card-footer {
-  padding: 0;
-  border-top: none;
+  background: transparent !important;
+  border-top: none !important;
+  padding: 0 1.5rem 1.5rem 1.5rem !important;
 }
 
-.btn-primary {
-  display: block; /* Disables inline-block default of buttons */
-  width: 100%; /* Full width */
-  box-sizing: border-box; /* Includes padding and border in the width */
-}
-/* Highlight condition and age with color */
-.list-group-item-success {
-  color: #28a745; /* Green text color for new items */
-}
-
-.list-group-item-warning {
-  color: #ffc107; /* Yellow text color for older items */
+/* Add Item Form Styling */
+.register-card {
+  background: var(--card-bg) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border) !important;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  color: var(--text-primary);
 }
 
-/* Customize the navbar brand and links */
-.navbar-brand, .nav-link {
-  font-size: 1.2rem; /* Increase font size */
-  font-weight: 500; /* Medium weight for better visibility */
+.form-control {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 1px solid var(--card-border) !important;
+  border-radius: 12px !important;
+  color: var(--text-primary) !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.3s ease !important;
 }
 
-/* Increase the font size and weight of nav-item */
-.nav-item .nav-link {
-  font-size: 1.1rem; /* Larger font size for nav links */
-  font-weight: bold; /* Bold font weight for emphasis */
-  color: #0056b3; /* Choose a color that stands out */
+.form-control:focus {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+  outline: none;
 }
 
-/* Change the background color of the navbar */
-.navbar {
-  background-color: #f8f9fa; /* A light color for contrast with the text */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* A subtle shadow for depth */
+.form-control::placeholder {
+  color: var(--text-muted) !important;
 }
 
-/* Add a hover effect to nav links */
-.nav-item .nav-link:hover {
-  color: #004085; /* A darker shade for hover state */
-  text-decoration: none; /* Optional: Removes the underline on hover */
+label {
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
 }
 
-/* Highlight the active nav link */
-.nav-item.active .nav-link, .nav-item .nav-link.active {
-  color: #d63384; /* A distinct color for the active page */
-  background-color: transparent; /* Optional: Adds a background color to the active link */
-  text-decoration: underline; /* Underlines the active link */
-  font-weight: bold; /* Makes the active link bold */
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 1.25rem !important;
+  padding-right: 2.5rem !important;
 }
 
-/* Style for login button */
-.nav-link.login-btn {
-  background-color: #28a745; /* A green color for login */
+/* Add Item Button Floating Trigger */
+.add-item-trigger {
+  background: var(--primary-gradient);
   color: white;
+  border: none;
+  border-radius: 14px;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-item-trigger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.55);
+  color: white;
+}
+
+/* File Upload Field */
+input[type="file"] {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+input[type="file"]::file-selector-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  color: var(--text-primary);
   padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s ease-in-out;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.nav-link.login-btn:hover,
-.nav-link.login-btn:focus {
-  background-color: #218838; /* A darker green on hover/focus for login */
-  color: white;
-  text-decoration: none;
-}
-
-/* Style for logout button */
-.nav-link.logout-btn {
-  background-color: #dc3545; /* A red color for logout */
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.nav-link.logout-btn:hover,
-.nav-link.logout-btn:focus {
-  background-color: #c82333; /* A darker red on hover/focus for logout */
-  color: white;
-  text-decoration: none;
+input[type="file"]::file-selector-button:hover {
+  background: rgba(255, 255, 255, 0.1);
 }

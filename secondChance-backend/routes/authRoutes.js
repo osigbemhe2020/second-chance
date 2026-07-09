@@ -17,6 +17,11 @@ router.post('/register', async (req, res) => {
     try {
         const db = await connectToDatabase();
         const collection = db.collection("users");
+        if (req.body.email === "" || req.body.firstName === "" || req.body.lastName === "" || req.body.password === "") {
+            logger.error('Email id, First name, Last name or Password is empty');
+            return res.status(400).json({ error: 'Email id, First name, Last name or Password is empty' });
+        }
+
         const existingEmail = await collection.findOne({ email: req.body.email });
         if (existingEmail) {
             logger.error('Email id already exists');
@@ -42,12 +47,12 @@ router.post('/register', async (req, res) => {
         const email = req.body.email;
         res.json({ authtoken, email });
     } catch (e) {
-         return res.status(500).send('Internal server error');
+        return res.status(500).send('Internal server error');
     }
 });
 
 
-     //Login Endpoint
+//Login Endpoint
 router.post('/login', async (req, res) => {
     console.log("\n\n Inside login")
     try {
@@ -61,9 +66,9 @@ router.post('/login', async (req, res) => {
         if (theUser) {
             let result = await bcryptjs.compare(req.body.password, theUser.password)
             //send appropriate message if mismatch
-            if(!result) {
+            if (!result) {
                 logger.error('Passwords do not match');
-                return res.status(404).json({ error: 'Wrong pasword' });
+                return res.status(401).json({ error: 'Wrong pasword' });
             }
             //Fetch user details
             let payload = {
@@ -77,7 +82,7 @@ router.post('/login', async (req, res) => {
             const authtoken = jwt.sign(payload, JWT_SECRET);
             logger.info('User logged in successfully');
             return res.status(200).json({ authtoken, userName, userEmail });
-        //Send appropriate message if user not found
+            //Send appropriate message if user not found
         } else {
             logger.error('User not found');
             return res.status(404).json({ error: 'User not found' });
@@ -85,17 +90,20 @@ router.post('/login', async (req, res) => {
     } catch (e) {
         logger.error(e);
         return res.status(500).json({ error: 'Internal server error', details: e.message });
-      }
+    }
 });
 // update API
 router.put('/update', async (req, res) => {
     // Task 2: Validate the input using `validationResult` and return approiate message if there is an error.
     const errors = validationResult(req);
-    // Task 3: Check if `email` is present in the header and throw an appropriate error message if not present.
     if (!errors.isEmpty()) {
-        logger.error('Validation errors in update request', errors.array());
+        logger.error(
+            { errors: errors.array() },
+            'Validation errors in update request'
+        );
         return res.status(400).json({ errors: errors.array() });
     }
+    // Task 3: Check if `email` is present in the header and throw an appropriate error message if not present.
     try {
         const email = req.headers.email;
         if (!email) {
@@ -111,7 +119,19 @@ router.put('/update', async (req, res) => {
             logger.error('User not found');
             return res.status(404).json({ error: "User not found" });
         }
-        existingUser.firstName = req.body.name;
+        
+        if (req.body.name) {
+            const [first, ...rest] = req.body.name.trim().split(/\s+/);
+            existingUser.firstName = first;
+            existingUser.lastName = rest.join(' ');
+        } else {
+            if (req.body.firstName !== undefined) {
+                existingUser.firstName = req.body.firstName;
+            }
+            if (req.body.lastName !== undefined) {
+                existingUser.lastName = req.body.lastName;
+            }
+        }
         existingUser.updatedAt = new Date();
         //Task 6: Update user credentials in DB
         const updatedUser = await collection.findOneAndUpdate(
@@ -119,10 +139,12 @@ router.put('/update', async (req, res) => {
             { $set: existingUser },
             { returnDocument: 'after' }
         );
+
+        const user = updatedUser.value || updatedUser;
         //Task 7: Create JWT authentication with user._id as payload using secret key from .env file
         const payload = {
             user: {
-                id: updatedUser._id.toString(),
+                id: user._id.toString(),
             },
         };
         const authtoken = jwt.sign(payload, JWT_SECRET);

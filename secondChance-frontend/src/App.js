@@ -1,5 +1,6 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import LandingPage from './components/LandingPage/LandingPage';
 import MainPage from './components/MainPage/MainPage';
 import SearchPage from './components/SearchPage/SearchPage';
 import LoginPage from './components/LoginPage/LoginPage';
@@ -13,12 +14,13 @@ import Profile from './components/Profile/Profile';
 import { AppProvider } from './context/AppContext';
 
 function App() {
+  const location = useLocation();
 
   return (
       <AppProvider>
-        <Navbar/>
+        {location.pathname !== '/' && <Navbar />}
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/app" element={<MainPage />} />
           <Route path='/app/profile' element={<Profile/>}/>
           <Route path="/app/item/:itemId" element={<DetailsPage/>} />

@@ -1,0 +1,95 @@
+/* Landing page — mirrors home.html + home.css */
+
+.landing-body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background-color: #f4f4f4;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+/* Blurred background pseudo-layer */
+.landing-body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: inherit;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    filter: blur(8px);
+    z-index: 0;
+}
+
+.landing-content {
+    position: relative;
+    font-weight: 600;
+    z-index: 2;
+    text-align: center;
+    color: #1a1a1a;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: transparent;
+    border-radius: 10px;
+}
+
+.landing-content h1,
+.landing-content h2 {
+    font-size: 4rem;
+    color: #333;
+    margin-bottom: 0.5em;
+    font-weight: 700;
+}
+
+.landing-content .lead {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.landing-content .btn-primary {
+    background-color: #1E90FF;
+    color: #FFFFFF;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.1s;
+    cursor: pointer;
+}
+
+.landing-content .btn-primary:hover,
+.landing-content .btn-primary:focus {
+    background-color: #f50057;
+    transform: scale(1.05);
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .landing-content h1 {
+        font-size: 3rem;
+    }
+
+    .landing-content h2 {
+        font-size: 2.5rem;
+    }
+
+    .landing-content .lead {
+        font-size: 1.25rem;
+    }
+}

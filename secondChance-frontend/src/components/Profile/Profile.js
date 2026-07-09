@@ -98,40 +98,43 @@ const handleSubmit = async (e) => {
 };
 
 return (
-<div className="profile-container">
-  {editMode ? (
-<form onSubmit={handleSubmit}>
-<label>
-  Email
-  <input
-    type="email"
-    name="email"
-    value={userDetails.email}
-    disabled // Disable the email field
-  />
-</label>
-<label>
-   Name
-   <input
-     type="text"
-     name="name"
-     value={updatedDetails.name}
-     onChange={handleInputChange}
-   />
-</label>
+  <div className="profile-container">
+    <div className="profile-avatar">
+      {userDetails.name ? userDetails.name.charAt(0).toUpperCase() : '?'}
+    </div>
 
-<button type="submit">Save</button>
-</form>
-) : (
-<div className="profile-details">
-<h1>Hi, {userDetails.name}</h1>
-<p> <b>Email:</b> {userDetails.email}</p>
-<button onClick={handleEdit}>Edit</button>
-<span style={{color:'green',height:'.5cm',display:'block',fontStyle:'italic',fontSize:'12px'}}>{changed}</span>
-</div>
-)}
-</div>
+    <div className="profile-card">
+      {editMode ? (
+        <form onSubmit={handleSubmit}>
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            value={userDetails.email}
+            disabled
+          />
+          <label>Name</label>
+          <input
+            type="text"
+            name="name"
+            value={updatedDetails.name}
+            onChange={handleInputChange}
+          />
+          <button type="submit">Save Changes</button>
+        </form>
+      ) : (
+        <>
+          <h1>Hi, {userDetails.name}</h1>
+          <p className="profile-email">{userDetails.email}</p>
+          <hr className="profile-divider" />
+          <button onClick={handleEdit}>Edit Profile</button>
+          <span className="profile-success">{changed}</span>
+        </>
+      )}
+    </div>
+  </div>
 );
+
 };
 
 export default Profile;
